@@ -1,0 +1,23 @@
+# Secrets — never commit real keys
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Data: PDFs stay local; only the folder is tracked
+data/raw/*
+!data/raw/.gitkeep
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Local-only
+_to_delete/
+Medical_AI_Assistant_Interview_Guide.pdf
+.ruff_cache/

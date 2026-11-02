@@ -1,0 +1,14 @@
+[
+ {"q": "תוך כמה זמן יש לדווח על אירוע חריג למנהל המחלקה?", "file": "safety_incident.pdf", "page": 1},
+ {"q": "לאן מועבר הדיווח אחרי מנהל המחלקה?", "file": "safety_incident.pdf", "page": 2},
+ {"q": "כמה זמן נמשך חיטוי ידיים בג'ל אלכוהולי?", "file": "hygiene_hands.pdf", "page": 2},
+ {"q": "מהם חמשת הרגעים להיגיינת ידיים?", "file": "hygiene_hands.pdf", "page": 1},
+ {"q": "כמה אחיות צריכות לבדוק מתן תרופה בסיכון גבוה?", "file": "high_risk_medication.pdf", "page": 1},
+ {"q": "איפה לא מאחסנים אשלגן כלורי מרוכז?", "file": "high_risk_medication.pdf", "page": 2},
+ {"q": "איזה סולם משתמשים בו להערכת סיכון לנפילה?", "file": "fall_prevention.pdf", "page": 1},
+ {"q": "איזה ציון מצביע על סיכון גבוה לנפילה?", "file": "fall_prevention.pdf", "page": 1},
+ {"q": "איזה שלט מוצמד למטופל בסיכון גבוה לנפילה?", "file": "fall_prevention.pdf", "page": 2},
+ {"q": "באילו מזהים משתמשים לזיהוי מטופל בקבלה?", "file": "patient_admission.pdf", "page": 1},
+ {"q": "היכן מוצמד צמיד הזיהוי?", "file": "patient_admission.pdf", "page": 2},
+ {"q": "מה צריך לתעד לגבי אלרגיות של מטופל?", "file": "patient_admission.pdf", "page": 2}
+]
