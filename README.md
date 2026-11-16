@@ -40,9 +40,40 @@ Streamlit / Swagger ──► FastAPI ──► AI Agent ──► LLM API
 The UI has four tabs: **Search** (works without an LLM key), **Ask** (RAG answer with document + page
 citations), **Agent** (shows every tool call it makes) and **Documents** (list and upload PDFs).
 
-## Quick start
+## Run everything with Docker
 
-Requirements: Python 3.11+, Docker.
+Requirements: Docker only.
+
+```bash
+cp .env.example .env        # set the passwords, and LLM_PROVIDER / LLM_API_KEY for Ask and Agent
+docker compose up --build   # db + api (:8000) + ui (:8501)
+```
+
+Open http://localhost:8501 for the UI and http://localhost:8000/docs for the API.
+On first start the API container creates the tables, generates the sample Hebrew protocols and
+indexes them. PDFs live in `./data/raw` on your machine (mounted into the container).
+If a local PostgreSQL already uses port 5432, publish the database on another port:
+`DB_HOST_PORT=5433 docker compose up --build`.
+
+| Service | Image | What it does |
+|---|---|---|
+| `db` | `pgvector/pgvector:pg16` | PostgreSQL + pgvector, read-only agent role from `db/init.sh` |
+| `api` | built from `Dockerfile` | FastAPI; runs `docker/start-api.sh` (init DB, load PDFs, serve) |
+| `ui` | same image | Streamlit, calls the API at `http://api:8000` |
+
+The image uses CPU-only PyTorch, bakes in the embedding model, and runs as a non-root user.
+Secrets come from `.env` at runtime and are excluded from the image by `.dockerignore`.
+
+Run tests and the eval inside the container:
+
+```bash
+docker compose exec api pytest
+docker compose exec api python -m eval.run_eval
+```
+
+## Local development (without Docker for the app)
+
+Requirements: Python 3.11+, Docker (for the database).
 
 ```bash
 # 1. Environment

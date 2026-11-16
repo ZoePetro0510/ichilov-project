@@ -1,0 +1,22 @@
+# Secrets: passed at runtime through env_file, never baked into the image
+.env
+
+# Local environments and caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.git/
+.vscode/
+.idea/
+.DS_Store
+
+# Data is mounted as a volume, not copied
+data/raw/*
+!data/raw/.gitkeep
+
+# Local-only files
+_to_delete/
+Medical_AI_Assistant_Interview_Guide.pdf

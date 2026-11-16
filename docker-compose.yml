@@ -10,7 +10,8 @@ services:
       AGENT_DB_USER: ${AGENT_DB_USER}
       AGENT_DB_PASSWORD: ${AGENT_DB_PASSWORD}
     ports:
-      - "5432:5432"
+      # Host port is configurable in case a local PostgreSQL already uses 5432
+      - "${DB_HOST_PORT:-5432}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       # Runs once, on the first start of an empty database
@@ -21,7 +22,44 @@ services:
       timeout: 5s
       retries: 10
 
-  # The API service is added on Day 2.
+  # FastAPI backend: creates tables, loads sample PDFs on first run, then serves on :8000
+  api:
+    build: .
+    image: medai-app
+    container_name: medai-api
+    env_file: .env
+    environment:
+      POSTGRES_HOST: db          # the db service, not localhost
+      POSTGRES_PORT: 5432
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data/raw:/app/data/raw # PDFs stay on your machine
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      start_period: 60s
+      retries: 10
+
+  # Streamlit UI on :8501 (same image), talks to the API over the compose network
+  ui:
+    image: medai-app
+    pull_policy: never           # built by the api service above
+    container_name: medai-ui
+    command: >
+      streamlit run ui/streamlit_app.py --server.port 8501 --server.address 0.0.0.0
+      --server.headless true --browser.gatherUsageStats false
+    environment:
+      API_URL: http://api:8000
+    ports:
+      - "8501:8501"
+    depends_on:
+      api:
+        condition: service_healthy
 
 volumes:
   pgdata:
